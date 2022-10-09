@@ -36,24 +36,23 @@
         </article>
         <aside class="dashboard__gins">
             <h2>Gin stock</h2>
-            <GinList />
         </aside>
     </section>
 </template>
 
 <script>
-    import GinList from '../components/GinList.vue';
-
     export default {
         name: 'DashboardView',
-        components: {
-            GinList
-        },
         data() {
             return {
                 name: "",
-                type: ""
+                type: "",
+                gins: []
             }
+        },
+        mounted() {
+            console.log(process.env.VUE_APP_KEY)
+            this.$api.getGinList();
         }
     }
 </script>
@@ -71,21 +70,21 @@
         }
 
         &__form {
+            width: 400px;
+            flex-shrink: 0;
+
+            @media(max-width: 1024px) {
+                width: 100%;
+            }
+        }
+
+        &__gins {
             width: 60%;
             min-width: 500px;
 
             @media(max-width: 1024px) {
                 width: 100%;
                 min-width: 0;
-            }
-        }
-
-        &__gins {
-            width: 300px;
-            flex-shrink: 0;
-
-            @media(max-width: 1024px) {
-                width: 100%;
             }
         }
     }

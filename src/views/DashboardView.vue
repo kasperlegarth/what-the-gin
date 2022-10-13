@@ -30,29 +30,64 @@
                     </div>
                 </div>
                 <div class="panel__footer">
-                    <button class="button button--main">Add Gin</button>
+                    <button @click="addGin" class="button button--main">Add Gin</button>
                 </div>
             </div>
         </article>
-        <aside class="dashboard__gins">
-            <h2>Gin stock</h2>
+        <aside v-if="gins" class="dashboard__gins">
+            <div class="panel">
+                <h2 class="panel__header">Gin stock</h2>
+                <div class="panel__body">
+                    <GinList @listChanged="getGin" :gins="gins" />
+                </div>
+            </div>
         </aside>
     </section>
 </template>
 
 <script>
+    import GinList from '../components/GinList.vue';
+
     export default {
         name: 'DashboardView',
+        components: { GinList },
         data() {
             return {
-                name: "",
-                type: "",
-                gins: []
+                name: null,
+                type: null,
+                gins: null
             }
         },
-        mounted() {
-            console.log(process.env.VUE_APP_KEY)
-            this.$api.getGinList();
+        created() {
+            this.getGin()
+        },
+        methods: {
+            getGin() {
+                const headers = { "X-Master-Key": this.key }
+                fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GIN}/latest`, { headers })
+                    .then(response => response.json())
+                    .then(data => (this.gins = data.record))
+            },
+            addGin() {
+                const newID = this.gins.length > 0 ? this.gins[this.gins.length - 1].id + 1 : 1;
+                const tempGin = JSON.parse(JSON.stringify(this.gins));
+
+                tempGin.push({ id: newID, name: this.name, type: this.type });
+
+                const requestOptions = {
+                    method: 'PUT',
+                    headers: { 'X-Master-Key': this.key, 'Content-Type': 'application/json'},
+                    body: JSON.stringify(tempGin)
+                }
+                
+                fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GIN}`, requestOptions)
+                    .then(response => response.json())
+                    .then(() => {
+                        this.getGin()
+                        this.name = null;
+                        this.type = null;
+                    })
+            }
         }
     }
 </script>
@@ -71,6 +106,7 @@
 
         &__form {
             width: 400px;
+            margin-right: 40px;
             flex-shrink: 0;
 
             @media(max-width: 1024px) {
@@ -79,12 +115,10 @@
         }
 
         &__gins {
-            width: 60%;
-            min-width: 500px;
+            flex-grow: 1;
 
             @media(max-width: 1024px) {
                 width: 100%;
-                min-width: 0;
             }
         }
     }

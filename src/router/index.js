@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import DashboardView from '../views/DashboardView.vue'
+import WelcomeView from '../views/WelcomeView.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'dashboard',
-    component: DashboardView
+    name: 'welcome',
+    component: WelcomeView
   },
   {
-    path: '/gin',
-    name: 'gin',
-    component: () => import('../views/GinRouletteView.vue')
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('../views/DashboardView.vue')
   }
 ]
 

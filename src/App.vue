@@ -1,5 +1,8 @@
 <template>
-  <router-link v-if="$route.name == 'dashboard'" :to="{ name: 'gin' }" class="button button--main floating-button">Gin Roulette</router-link>
+  <aside>
+    <router-link v-if="$route.name != 'dashboard'" :to="{ name: 'dashboard' }" class="button button--main floating-button">Dashboard</router-link>
+    <router-link v-else :to="{ name: 'welcome' }" class="button button--main floating-button">Forside</router-link>
+  </aside>
   <main>
     <router-view/>
   </main>

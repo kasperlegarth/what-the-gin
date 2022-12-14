@@ -18,20 +18,22 @@
                     <button class="button button--main">Add Gin</button>
                 </div>
             </div>
+            <Panel headline="Add new Garnish" confirmText="Add garnish">
+                <template v-slot:body>
+                    test
+                </template>
+            </Panel>
         </article>
-        <aside v-if="gins" class="dashboard__gins">
-            <div class="panel">
-                <h2 class="panel__header">Gin stock</h2>
-                <div class="panel__body">
-                </div>
-            </div>
-        </aside>
     </section>
 </template>
 
 <script>
+    import Panel from '../components/Panel.vue';
     export default {
         name: 'DashboardView',
+        components: {
+            Panel
+        },
         data() {
             return {
                 garnishTypes: [],
@@ -41,8 +43,10 @@
                 newGarnishName: '',
             }
         },
-        created() {
-            
+        async created() {
+            const response = await this.$getData();
+
+            console.log(response.record)
         },
         methods: {
 

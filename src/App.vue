@@ -11,12 +11,6 @@
 <style lang="scss">
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap');
 
-  $color--lucky-point: #2c2c54;
-  $color--liberty: #706fd3; 
-  $color--white: #fff;
-  $color--swan-white: #f7f1e3;
-  $color--crocodile-tooth: #d1ccc0;
-
   * {
     box-sizing: border-box;
   }
@@ -56,31 +50,6 @@
     position: fixed;
     top: 30px;
     right: 30px;
-  }
-
-  .panel {
-    background-color: $color--white;
-    border: solid 1px lighten($color--crocodile-tooth, 12);
-    border-radius: 3px;;
-
-    &__header {
-      margin: 0;
-      padding: 16px 24px;
-      color: $color--liberty;
-      font-size: 22px;
-    }
-
-    &__body {
-      padding: 24px;
-      border-top: solid 1px lighten($color--crocodile-tooth, 12);
-      border-bottom: solid 1px lighten($color--crocodile-tooth, 12);
-    }
-
-    &__footer {
-      padding: 24px;
-      display: flex;
-      justify-content: flex-end;
-    }
   }
 
   .form {

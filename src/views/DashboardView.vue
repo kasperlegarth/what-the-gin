@@ -2,25 +2,9 @@
     <section class="dashboard">
         <h1>Dashbaord</h1>
         <article class="dashboard__form">
-            <div class="panel">
-                <h2 class="panel__header">Add new Garnish</h2>
-                <div class="panel__body">
-                    <div class="form">
-                        <div class="form__group">
-                            <strong class="form__group-title">Garnish</strong>
-                            <div class="form__group-field">
-                                <input type="text" v-model="newGarnishName" placeholder="Name of the Garnish" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel__footer">
-                    <button class="button button--main">Add Gin</button>
-                </div>
-            </div>
             <Panel headline="Add new Garnish" confirmText="Add garnish">
                 <template v-slot:body>
-                    test
+                    <GarnishForm></GarnishForm>
                 </template>
             </Panel>
         </article>
@@ -28,11 +12,14 @@
 </template>
 
 <script>
-    import Panel from '../components/Panel.vue';
+    import Panel from '@/components/Panel.vue';
+    import GarnishForm from '@/components/GarnishForm.vue';
+
     export default {
-        name: 'DashboardView',
+        name: 'Dashboard',
         components: {
-            Panel
+            Panel,
+            GarnishForm
         },
         data() {
             return {

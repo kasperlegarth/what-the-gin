@@ -23,6 +23,9 @@
                 type: String,
                 default: 'Ok'
             }
+        },
+        created() {
+            
         }
     }
 </script>

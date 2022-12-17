@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'What the Gin?'
+  name: 'What the Gin?',
 }
 </script>
 
@@ -36,6 +36,12 @@ export default {
 
   h2,h3,h4,h5,h6,strong {
     font-weight: 600;
+  }
+
+  a {
+    color: $color--liberty;
+    text-decoration: none;
+    font-weight: 700;
   }
 
   .button {
@@ -106,6 +112,11 @@ export default {
             height: 24px;
             accent-color: $color--liberty;
           }
+        }
+      }
+      &-footer {
+        a {
+          font-size: 13px;
         }
       }
     }

@@ -5,7 +5,7 @@
             <slot name="body"></slot>
         </div>
         <div class="panel__footer">
-            <button class="button button--main">{{ confirmText }}</button>
+            <button @click="confirm" class="button button--main">{{ confirmText }}</button>
         </div>
     </div>
 </template>
@@ -24,8 +24,10 @@
                 default: 'Ok'
             }
         },
-        created() {
-            
+        methods: {
+            confirm() {
+                this.$emit('confirm');
+            }
         }
     }
 </script>

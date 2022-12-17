@@ -2,9 +2,9 @@
     <section class="dashboard">
         <h1>Dashbaord</h1>
         <article class="dashboard__form">
-            <Panel headline="Add new Garnish" confirmText="Add garnish">
+            <Panel headline="Add new Garnish" @confirm="addGarnish" confirmText="Add garnish">
                 <template v-slot:body>
-                    <GarnishForm></GarnishForm>
+                    <GarnishForm ref="garnishForm" :garnish="garnish" :garnishTypes="garnishTypes"></GarnishForm>
                 </template>
             </Panel>
         </article>
@@ -23,20 +23,24 @@
         },
         data() {
             return {
-                garnishTypes: [],
-                tonicTypes: [],
-                ginTypes: [],
-
-                newGarnishName: '',
+                garnish: null,
+                garnishTypes: null,
+                tonic: null,
+                tonicTypes: null,
+                gin: null,
+                ginTypes: null
             }
         },
         async created() {
-            const response = await this.$getData();
-
-            console.log(response.record)
+            const response = await this.$getGarnish()
+            
+            this.garnish = response.record.garnish
+            this.garnishTypes = response.record.types
         },
         methods: {
-
+            addGarnish() {
+                this.$refs.garnishForm.addGarnish()
+            }
         }
     }
 </script>

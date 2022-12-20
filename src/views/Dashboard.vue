@@ -4,7 +4,7 @@
         <article class="dashboard__form">
             <Panel headline="Add new Garnish" @confirm="addGarnish" confirmText="Add garnish">
                 <template v-slot:body>
-                    <GarnishForm ref="garnishForm" :garnish="garnish" :garnishTypes="garnishTypes"></GarnishForm>
+                    <GarnishForm ref="garnishForm" :garnish="garnish" :typesOfGarnish="typesOfGarnish"></GarnishForm>
                 </template>
             </Panel>
         </article>
@@ -21,25 +21,35 @@
             Panel,
             GarnishForm
         },
-        data() {
-            return {
-                garnish: null,
-                garnishTypes: null,
-                tonic: null,
-                tonicTypes: null,
-                gin: null,
-                ginTypes: null
+        props: {
+            gins: {
+                type: Array,
+                default: Array.empty
+            },
+            typesOfGin: {
+                type: Array,
+                default: Array.empty
+            },
+            tonics: {
+                type: Array,
+                default: Array.empty
+            },
+            typesOfTonic: {
+                type: Array,
+                default: Array.empty
+            },
+            garnish: {
+                type: Array,
+                default: Array.empty
+            },
+            typesOfGarnish: {
+                type: Array,
+                default: Array.empty
             }
-        },
-        async created() {
-            const response = await this.$getGarnish()
-            
-            this.garnish = response.record.garnish
-            this.garnishTypes = response.record.types
         },
         methods: {
             addGarnish() {
-                this.$refs.garnishForm.addGarnish()
+                console.log('add garnish')
             }
         }
     }

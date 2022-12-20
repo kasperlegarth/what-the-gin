@@ -4,13 +4,77 @@
     <router-link v-else :to="{ name: 'welcome' }" class="button button--main floating-button">Forside</router-link>
   </aside>
   <main>
-    <router-view/>
+    <router-view :gins="gins" :typesOfGin="typesOfGin" :tonics="tonics" :typesOfTonic="typesOfTonic" :garnish="garnish" :typesOfGarnish="typesOfGarnish" />
   </main>
 </template>
 
 <script>
 export default {
   name: 'What the Gin?',
+  data() {
+    return {
+      gins: null,
+      typesOfGin: null,
+      tonics: null,
+      typesOfTonic: null,
+      garnish: null,
+      typesOfGarnish: null
+    }
+  },
+  created() {
+    this.getAllData();
+  },
+  methods: {
+    getAllData() {
+      this.getGin()
+      this.getTonic()
+      this.getGarnish()
+    },
+    async getGin() {
+      const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
+      let request = await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GIN}/latest`, { headers })
+          .then(response =>response.json())
+
+      this.gins = request.record.gins;
+      this.typesOfGin = request.record.types;
+    },
+    addGin(gin) {
+      console.log('Add the gin: ', gin)
+    },
+    addGinType(typeName) {
+      console.log('Add the type: ', typeName)
+    },
+    async getTonic() {
+      const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
+      let request = await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_TONIC}/latest`, { headers })
+          .then(response =>response.json())
+
+      this.tonics = request.record.tonics;
+      this.typesOfTonic = request.record.types;
+    },
+    addTonic(tonic) {
+      console.log('Add the tonic: ', tonic)
+    },
+    addTonicType(typeName) {
+      console.log('Add the type: ', typeName)
+    },
+    async getGarnish() {
+      const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
+      let request = await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GARNISH}/latest`, { headers })
+          .then(response =>response.json())
+
+      console.log(request)
+
+      this.garnish = request.record.garnish;
+      this.typesOfGarnish = request.record.types;
+    },
+    addGarnish(garnish) {
+      console.log('Add the Garnish: ', garnish)
+    },
+    addGarnishType(typeName) {
+      console.log('Add the type: ', typeName)
+    }
+  }
 }
 </script>
 

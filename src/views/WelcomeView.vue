@@ -5,5 +5,11 @@
 <script>
 export default {
   name: 'WelcomeView',
+  props: {
+    gins: {
+      type: Array,
+      default: Array.empty
+    }
+  }
 }
 </script>

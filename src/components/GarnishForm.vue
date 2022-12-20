@@ -8,7 +8,7 @@
         </div>
         <div class="form__group">
             <strong class="form__group-title">Garnish type</strong>
-            <div v-for="type in garnishTypes" class="form__group-field" :key="type.id">
+            <div v-for="type in typesOfGarnish" class="form__group-field" :key="type.id">
                 <input type="radio" v-model="garnishType" name="type" :value="type.id" :id="type.id" />
                 <label :for="type.id">{{ type.name }}</label>
             </div>
@@ -24,7 +24,11 @@
     export default {
         name: 'Garnish Form',
         props: {
-            garnishTypes: {
+            garnish: {
+                type: Array,
+                default: Array.empty
+            },
+            typesOfGarnish: {
                 type: Array,
                 default: Array.empty
             }

@@ -2,9 +2,23 @@
     <section class="dashboard">
         <h1>Dashbaord</h1>
         <article class="dashboard__form">
-            <Panel headline="Add new Garnish" @confirm="addGarnish" confirmText="Add garnish">
+            <Panel headline="Add new Garnish" confirmText="Add garnish">
                 <template v-slot:body>
-                    <GarnishForm ref="garnishForm" :garnish="garnish" :typesOfGarnish="typesOfGarnish"></GarnishForm>
+                    <GarnishForm ref="garnishForm" :typesOfGarnish="typesOfGarnish" @newType="addNewGarnishType"></GarnishForm>
+                </template>
+            </Panel>
+        </article>
+        <article class="dashboard__form">
+            <Panel headline="Add new Tonic" @confirm="addTonic" confirmText="Add tonic">
+                <template v-slot:body>
+                    <TonicForm ref="tonicForm" :typesOfTonic="typesOfTonic"></TonicForm>
+                </template>
+            </Panel>
+        </article>
+        <article class="dashboard__form">
+            <Panel headline="Add new Gin" @confirm="addGin" confirmText="Add gin">
+                <template v-slot:body>
+                    <GinForm ref="ginForm" :typesOfGin="typesOfGin"></GinForm>
                 </template>
             </Panel>
         </article>
@@ -12,14 +26,18 @@
 </template>
 
 <script>
-    import Panel from '@/components/Panel.vue';
-    import GarnishForm from '@/components/GarnishForm.vue';
+    import Panel from "@/components/Panel.vue";
+    import GarnishForm from "@/components/GarnishForm.vue";
+    import TonicForm from "@/components/TonicForm.vue";
+    import GinForm from "@/components/GinForm.vue";
 
     export default {
-        name: 'Dashboard',
+        name: "Dashboard",
         components: {
             Panel,
-            GarnishForm
+            GarnishForm,
+            TonicForm,
+            GinForm
         },
         props: {
             gins: {
@@ -49,7 +67,10 @@
         },
         methods: {
             addGarnish() {
-                console.log('add garnish')
+                console.log("add garnish")
+            },
+            addNewGarnishType(payload) {
+                this.$emit('newGarnishType', payload);
             }
         }
     }
@@ -69,7 +90,7 @@
 
         &__form {
             width: 400px;
-            margin-right: 40px;
+            max-width: 30%;
             flex-shrink: 0;
 
             @media(max-width: 1024px) {

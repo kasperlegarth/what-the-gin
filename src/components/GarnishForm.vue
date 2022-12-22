@@ -8,13 +8,16 @@
         </div>
         <div class="form__group">
             <strong class="form__group-title">Garnish type</strong>
-            <div v-for="type in typesOfGarnish" class="form__group-field" :key="type.id">
-                <input type="radio" v-model="garnishType" name="type" :value="type.id" :id="type.id" />
-                <label :for="type.id">{{ type.name }}</label>
+            <div v-for="garnishType in typesOfGarnish" class="form__group-field" :key="garnishType.id">
+                <input type="radio" v-model="pickedGarnishType" name="type" :value="garnishType.id" :id="garnishType.id" />
+                <label :for="garnishType.id">{{ garnishType.name }}</label>
             </div>
             <div class="form__group-footer">
                 <a href="#" @click.prevent="showNewType = true">Add new type</a>
-                <input v-if="showNewType" @keyup.enter="addType" type="text" v-model="newType" />
+                <div class="form__group-field">
+                    <input v-if="showNewType" @keyup.enter="addType" type="text" class="small" placeholder="Name of new type" v-model="newType" />
+                    <button v-if="showNewType" @click="addType" type="button" class="button button--main button--small">Add</button>
+                </div>
             </div>
         </div>
     </div>
@@ -38,7 +41,7 @@
                 showNewType: false,
                 newType: '',
                 garnishName: '',
-                garnishType: '',
+                pickedGarnishType: '',
             }
         },
         methods: {
@@ -46,9 +49,10 @@
                 console.log('something worked')
             },
             addType() {
-                console.log('test');
+                this.$emit('newType', this.newType);
+                
                 this.newType = '';
-                this.showNewType = false;
+                this.showNewType = false;                
             }
         }
     }

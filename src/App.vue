@@ -4,13 +4,20 @@
     <router-link v-else :to="{ name: 'welcome' }" class="button button--main floating-button">Forside</router-link>
   </aside>
   <main>
-    <router-view :gins="gins" :typesOfGin="typesOfGin" :tonics="tonics" :typesOfTonic="typesOfTonic" :garnish="garnish" :typesOfGarnish="typesOfGarnish" />
+    <router-view 
+      :gins="gins"
+      :typesOfGin="typesOfGin"
+      :tonics="tonics"
+      :typesOfTonic="typesOfTonic"
+      :garnish="garnish"
+      :typesOfGarnish="typesOfGarnish"
+      @newGarnishType="addGarnishType" />
   </main>
 </template>
 
 <script>
 export default {
-  name: 'What the Gin?',
+  name: "What the Gin?",
   data() {
     return {
       gins: null,
@@ -39,10 +46,10 @@ export default {
       this.typesOfGin = request.record.types;
     },
     addGin(gin) {
-      console.log('Add the gin: ', gin)
+      console.log("Add the gin: ", gin)
     },
     addGinType(typeName) {
-      console.log('Add the type: ', typeName)
+      console.log("Add the type: ", typeName)
     },
     async getTonic() {
       const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
@@ -53,33 +60,63 @@ export default {
       this.typesOfTonic = request.record.types;
     },
     addTonic(tonic) {
-      console.log('Add the tonic: ', tonic)
+      console.log("Add the tonic: ", tonic)
     },
     addTonicType(typeName) {
-      console.log('Add the type: ', typeName)
+      console.log("Add the type: ", typeName)
     },
     async getGarnish() {
       const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
       let request = await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GARNISH}/latest`, { headers })
           .then(response =>response.json())
 
-      console.log(request)
-
-      this.garnish = request.record.garnish;
-      this.typesOfGarnish = request.record.types;
+      this.garnish = request.record.garnish
+      this.typesOfGarnish = request.record.types
     },
     addGarnish(garnish) {
-      console.log('Add the Garnish: ', garnish)
+      console.log("Add the Garnish: ", garnish)
     },
-    addGarnishType(typeName) {
-      console.log('Add the type: ', typeName)
+    async addGarnishType(typeName) {
+      let newId = null
+
+      if(this.typesOfGarnish.length > 0) {
+        let lastIdInArray = this.typesOfGarnish.at(-1).id;
+        newId = lastIdInArray + 1
+      } else {
+        newId = 1
+      }
+
+      const newData = {
+        types: this.typesOfGarnish,
+        garnish: this.garnish
+      }
+
+      newData.types.push({
+        id: newId,
+        name: typeName
+      })
+
+      console.log(newData)
+
+      const options = {
+        method: "PUT",
+        headers: { "X-Master-Key": process.env.VUE_APP_MASTERKEY, "Content-Type": "application/json" },
+        body: JSON.stringify(newData)
+      }
+
+      await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GARNISH}`, options)
+        .then(response => {
+          if(response.ok) {
+            this.getGarnish()
+          }
+        })
     }
   }
 }
 </script>
 
 <style lang="scss">
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap");
 
   * {
     box-sizing: border-box;
@@ -87,7 +124,7 @@ export default {
 
   body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 16px;
     background-color: $color--swan-white;
   }
@@ -119,6 +156,11 @@ export default {
     &--main {
       color: $color--white;
       background-color: $color--liberty;
+    }
+
+    &--small {
+      padding: 8px 12px;
+      font-size: 14px;
     }
   }
 
@@ -159,7 +201,7 @@ export default {
             display: block;
             width: 100%;
             padding: 12px;
-            font-family: 'Poppins', sans-serif;
+            font-family: "Poppins", sans-serif;
             font-size: 16px;
             border-radius: 3px;
             border: solid 1px lighten($color--crocodile-tooth, 10);
@@ -168,6 +210,11 @@ export default {
             &:focus-visible {
               outline-color: $color--liberty;
             }
+
+            &.small {
+              padding: 6px;
+              font-size: 12px;
+            }
           }
 
           &[type="radio"] {
@@ -175,6 +222,10 @@ export default {
             width: 24px;
             height: 24px;
             accent-color: $color--liberty;
+          }
+
+          & + .button {
+            margin-left: 10px;
           }
         }
       }

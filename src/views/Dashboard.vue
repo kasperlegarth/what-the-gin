@@ -2,16 +2,19 @@
     <section class="dashboard">
         <h1>Dashbaord</h1>
         <article class="dashboard__form">
-            <Panel headline="Add new Garnish" confirmText="Add garnish">
+            <Panel headline="Add new Garnish" @confirm="addGarnish" confirmText="Add garnish">
                 <template v-slot:body>
                     <GarnishForm ref="garnishForm" :typesOfGarnish="typesOfGarnish" @newType="addNewGarnishType"></GarnishForm>
+                </template>
+                <template v-if="garnishError" v-slot:error>
+                    <p>Test</p>
                 </template>
             </Panel>
         </article>
         <article class="dashboard__form">
             <Panel headline="Add new Tonic" @confirm="addTonic" confirmText="Add tonic">
                 <template v-slot:body>
-                    <TonicForm ref="tonicForm" :typesOfTonic="typesOfTonic"></TonicForm>
+                    <TonicForm ref="tonicForm" :typesOfTonic="typesOfTonic" @newType="addNewTonicType"></TonicForm>
                 </template>
             </Panel>
         </article>
@@ -65,12 +68,46 @@
                 default: Array.empty
             }
         },
+        data() {
+            return {
+                garnishError: null,
+            }
+        },
         methods: {
             addGarnish() {
-                console.log("add garnish")
+                this.garnishError = null;
+
+                let garnish = this.$refs.garnishForm.$data.garnishName
+                let garnishType = this.$refs.garnishForm.$data.pickedGarnishType
+            
+                if(garnish == "") {
+                    this.garnishError = ["Remember to fill out the name of the garnish"]
+                }
+
+                if(garnishType == "") {
+                    if(this.garnishError == null) {
+                        this.garnishError = ["Remember to pick af type of garnish"]
+                    } else {
+                        this.garnishError.push("Remember to pick af type of garnish")
+                    }
+                }
+
+                if(garnishType != null) {
+                    this.$emit('newGarnish', { name: garnish, type: garnishType })
+                    this.$refs.garnishForm.reset()
+                }
             },
             addNewGarnishType(payload) {
-                this.$emit('newGarnishType', payload);
+                this.$emit("newGarnishType", payload)
+            },
+            addTonic() {
+                console.log("add tonic")
+            },
+            addNewTonicType(payload) {
+                this.$emit("newTonicType", payload)
+            },
+            addGin() {
+                console.log("add gin")
             }
         }
     }

@@ -25,7 +25,8 @@
 
 <script>
     export default {
-        name: 'Garnish Form',
+        name: "Garnish Form",
+        emits: ["newType"],
         props: {
             garnish: {
                 type: Array,
@@ -39,20 +40,24 @@
         data() {
             return {
                 showNewType: false,
-                newType: '',
-                garnishName: '',
-                pickedGarnishType: '',
+                newType: "",
+                garnishName: "",
+                pickedGarnishType: "",
             }
         },
         methods: {
             addGarnish() {
-                console.log('something worked')
+                console.log("something worked")
             },
             addType() {
-                this.$emit('newType', this.newType);
+                this.$emit("newType", this.newType)
                 
-                this.newType = '';
-                this.showNewType = false;                
+                this.newType = ""
+                this.showNewType = false               
+            },
+            reset() {
+                this.garnishName = ""
+                this.pickedGarnishType = ""
             }
         }
     }

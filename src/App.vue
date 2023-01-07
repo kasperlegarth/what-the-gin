@@ -11,7 +11,9 @@
       :typesOfTonic="typesOfTonic"
       :garnish="garnish"
       :typesOfGarnish="typesOfGarnish"
-      @newGarnishType="addGarnishType" />
+      @newGarnish="addGarnish"
+      @newGarnishType="addGarnishType"
+      @newTonicType="addTonicType" />
   </main>
 </template>
 
@@ -62,8 +64,38 @@ export default {
     addTonic(tonic) {
       console.log("Add the tonic: ", tonic)
     },
-    addTonicType(typeName) {
-      console.log("Add the type: ", typeName)
+    async addTonicType(typeName) {
+      let newId = null
+
+      if(this.typesOfTonic.length > 0) {
+        let lastIdInArray = this.typesOfTonic.at(-1).id;
+        newId = lastIdInArray + 1
+      } else {
+        newId = 1
+      }
+
+      const newData = {
+        types: this.typesOfTonic,
+        tonics: this.tonics
+      }
+
+      newData.types.push({
+        id: newId,
+        name: typeName
+      })
+
+      const options = {
+        method: "PUT",
+        headers: { "X-Master-Key": process.env.VUE_APP_MASTERKEY, "Content-Type": "application/json" },
+        body: JSON.stringify(newData)
+      }
+
+      await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_TONIC}`, options)
+        .then(response => {
+          if(response.ok) {
+            this.getGarnish()
+          }
+        })
     },
     async getGarnish() {
       const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
@@ -73,14 +105,45 @@ export default {
       this.garnish = request.record.garnish
       this.typesOfGarnish = request.record.types
     },
-    addGarnish(garnish) {
-      console.log("Add the Garnish: ", garnish)
+    async addGarnish(garnish) {
+      let newId = null;
+
+      if(this.garnish.length > 0) {
+        let lastIdInArray = this.garnish.at(-1).id
+        newId = lastIdInArray + 1
+      } else {
+        newId = 1
+      }
+
+      const newData = {
+        types: this.typesOfGarnish,
+        garnish: this.garnish
+      }
+
+      newData.garnish.push({
+        id: newId,
+        name: garnish.name,
+        type: garnish.type
+      })
+
+      const options = {
+        method: "PUT",
+        headers: { "X-Master-Key": process.env.VUE_APP_MASTERKEY, "Content-Type": "application/json" },
+        body: JSON.stringify(newData)
+      }
+
+      await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GARNISH}`, options)
+        .then(response => {
+          if(response.ok) {
+            this.getGarnish()
+          }
+        })
     },
     async addGarnishType(typeName) {
       let newId = null
 
       if(this.typesOfGarnish.length > 0) {
-        let lastIdInArray = this.typesOfGarnish.at(-1).id;
+        let lastIdInArray = this.typesOfGarnish.at(-1).id
         newId = lastIdInArray + 1
       } else {
         newId = 1
@@ -95,8 +158,6 @@ export default {
         id: newId,
         name: typeName
       })
-
-      console.log(newData)
 
       const options = {
         method: "PUT",
@@ -196,7 +257,21 @@ export default {
           margin-bottom: 0;
         }
 
+        textarea {
+          padding: 12px;
+          width: 100%;
+          font-family: "Poppins", sans-serif;
+          font-size: 16px;
+          border-radius: 3px;
+          border: solid 1px lighten($color--crocodile-tooth, 10);
+          background-color: lighten($color--crocodile-tooth, 18);
+        }
+
         input {
+          &:not(:last-child) {
+            margin-bottom: 10px;
+          }
+
           &[type="text"] {
             display: block;
             width: 100%;
@@ -230,6 +305,8 @@ export default {
         }
       }
       &-footer {
+        margin-top: 20px;
+
         a {
           font-size: 13px;
         }

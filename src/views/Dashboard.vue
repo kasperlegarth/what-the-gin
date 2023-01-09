@@ -42,6 +42,7 @@
             TonicForm,
             GinForm
         },
+        emits: ["newGin", "newTonic", "newGarnish", "newGarnish", "newGarnishType", "newTonicType"],
         props: {
             gins: {
                 type: Array,

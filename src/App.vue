@@ -1,7 +1,7 @@
 <template>
   <aside>
-    <router-link v-if="$route.name != 'dashboard'" :to="{ name: 'dashboard' }" class="button button--main floating-button">Dashboard</router-link>
-    <router-link v-else :to="{ name: 'welcome' }" class="button button--main floating-button">Forside</router-link>
+    <router-link v-if="$route.name != 'dashboard'" :to="{ name: 'dashboard' }"></router-link>
+    <router-link v-else :to="{ name: 'guide' }"></router-link>
   </aside>
   <main>
     <router-view 
@@ -183,11 +183,17 @@ export default {
     box-sizing: border-box;
   }
 
+  html {
+    height: 100%;
+  }
+
   body {
     margin: 0;
-    font-family: "Poppins", sans-serif;
+    height: 100%;
     font-size: 16px;
-    background-color: $color--swan-white;
+    font-family: "Poppins", sans-serif;
+    background-color: $color--chalky;
+    overflow: hidden;
   }
 
   h1 {
@@ -204,6 +210,21 @@ export default {
     color: $color--liberty;
     text-decoration: none;
     font-weight: 700;
+  }
+
+  aside {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    z-index: 222;
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .button {
@@ -223,12 +244,6 @@ export default {
       padding: 8px 12px;
       font-size: 14px;
     }
-  }
-
-  .floating-button {
-    position: fixed;
-    top: 30px;
-    right: 30px;
   }
 
   .form {
@@ -312,5 +327,17 @@ export default {
         }
       }
     }
+  }
+
+  @font-face {
+    font-family: "Garnett";
+    src: url(@/assets/fonts/Garnett-Regular.otf);
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Garnett";
+    src: url(@/assets/fonts/Garnett-Medium.otf);
+    font-weight: 500;
   }
 </style>

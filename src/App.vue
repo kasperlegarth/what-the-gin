@@ -13,7 +13,8 @@
       :typesOfGarnish="typesOfGarnish"
       @newGarnish="addGarnish"
       @newGarnishType="addGarnishType"
-      @newTonicType="addTonicType" />
+      @newTonicType="addTonicType"
+      @newGinType="addGinType" />
   </main>
 </template>
 
@@ -40,23 +41,52 @@ export default {
       this.getGarnish()
     },
     async getGin() {
-      const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
+      const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY, "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept" }
       let request = await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GIN}/latest`, { headers })
-          .then(response =>response.json())
+          .then(response => response.json())
 
-      this.gins = request.record.gins;
-      this.typesOfGin = request.record.types;
+      this.gins = request.record.gins
+      this.typesOfGin = request.record.types
     },
     addGin(gin) {
       console.log("Add the gin: ", gin)
     },
-    addGinType(typeName) {
-      console.log("Add the type: ", typeName)
+    async addGinType(typeName) {
+      let newId = null;
+      if(this.typesOfGin.length > 0) {
+        let lastIdInArray = this.typesOfGin.at(-1).id;
+        newId = lastIdInArray + 1;
+      } else {
+        newId = 1;
+      }
+
+      const newData = {
+        types: this.typesOfGin,
+        gins: this.gins
+      }
+
+      newData.types.push({
+        id: newId,
+        name: typeName
+      })
+
+      const options =  {
+        method: "PUT",
+        headers: { "X-Master-Key": process.env.VUE_APP_MASTERKEY, "Content-Type": "application/json" },
+        body: JSON.stringify(newData)
+      }
+
+      await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GIN}`, options)
+        .then(response => {
+          if(response.ok) {
+            this.getGin()
+          }
+        })
     },
     async getTonic() {
       const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
       let request = await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_TONIC}/latest`, { headers })
-          .then(response =>response.json())
+          .then(response => response.json())
 
       this.tonics = request.record.tonics;
       this.typesOfTonic = request.record.types;
@@ -100,7 +130,7 @@ export default {
     async getGarnish() {
       const headers = { "X-Master-Key": process.env.VUE_APP_MASTERKEY }
       let request = await fetch(`https://api.jsonbin.io/v3/b/${process.env.VUE_APP_ENDPOINT_GARNISH}/latest`, { headers })
-          .then(response =>response.json())
+          .then(response => response.json())
 
       this.garnish = request.record.garnish
       this.typesOfGarnish = request.record.types
@@ -191,9 +221,6 @@ export default {
     margin: 0;
     height: 100%;
     font-size: 16px;
-    font-family: "Poppins", sans-serif;
-    background-color: $color--chalky;
-    overflow: hidden;
   }
 
   h1 {
@@ -273,8 +300,10 @@ export default {
         }
 
         textarea {
+          margin-top: 12px;
           padding: 12px;
           width: 100%;
+          min-height: 125px;
           font-family: "Poppins", sans-serif;
           font-size: 16px;
           border-radius: 3px;

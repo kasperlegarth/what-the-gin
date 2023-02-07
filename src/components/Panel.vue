@@ -34,9 +34,12 @@
 
 <style lang="scss">
     .panel {
+        display: flex;
+        flex-direction: column;
         background-color: $color--white;
         border: solid 1px lighten($color--crocodile-tooth, 12);
         border-radius: 3px;;
+        height: 100%;
 
         &__header {
             margin: 0;
@@ -48,13 +51,14 @@
         &__body {
             padding: 24px;
             border-top: solid 1px lighten($color--crocodile-tooth, 12);
-            border-bottom: solid 1px lighten($color--crocodile-tooth, 12);
         }
 
         &__footer {
+            margin-top: auto;
             padding: 24px;
             display: flex;
             justify-content: flex-end;
+            border-top: solid 1px lighten($color--crocodile-tooth, 12);
         }
     }
 

@@ -1,20 +1,22 @@
 <template>
   <div class="figure">
-      <svg class="body" viewBox="0 0 1079 1440" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M-601.853 1827.16C-1349.69 1415.69 -1356.97 841.37 -1183.22 439.961C-993.433 1.51337 -584.273 -383.323 -107.513 -380.774C768.878 -376.077 1226.78 502.328 1029.15 1211.65C917.969 1610.74 -33.2031 2139.97 -601.853 1827.13V1827.16Z" fill="#4CA886" stroke="black" stroke-width="7" stroke-miterlimit="10"/>
+    <svg class="body" viewBox="0 0 1079 1440" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-601.853 1827.16C-1349.69 1415.69 -1356.97 841.37 -1183.22 439.961C-993.433 1.51337 -584.273 -383.323 -107.513 -380.774C768.878 -376.077 1226.78 502.328 1029.15 1211.65C917.969 1610.74 -33.2031 2139.97 -601.853 1827.13V1827.16Z" fill="#4CA886" stroke="black" stroke-width="7" stroke-miterlimit="10"/>
+    </svg>
+
+    <div class="face">
+      <div class="eye eye--left"></div>
+      <div class="eye eye--right"></div>
+
+      <svg class="mouth" viewBox="0 0 83 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M79.028 4.26442C62.9547 29.8343 29.1911 37.54 3.62122 21.4666" stroke="black" stroke-width="7" stroke-miterlimit="10" stroke-linecap="round"/>
       </svg>
-
-      <div class="face">
-        <div class="eye eye--left"></div>
-        <div class="eye eye--right"></div>
-
-        <svg class="mouth" viewBox="0 0 83 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M79.028 4.26442C62.9547 29.8343 29.1911 37.54 3.62122 21.4666" stroke="black" stroke-width="7" stroke-miterlimit="10" stroke-linecap="round"/>
-        </svg>
-      </div>
-
-      <div class="hand"></div>
     </div>
+
+    <div class="hand">
+      <img src="@/assets/hand.gif" />
+    </div>
+  </div>
   <div class="welcome-screen">
     <transition name="slide-up">
       <div v-if="transitionStep == 1" class="transition-text transition-text--big">
@@ -33,6 +35,10 @@
         Need a quick fix? push the speed drink button
       </div>
     </transition>
+  </div>
+  <div class="controls">
+    <button class="main">🌿 Let the good times begin 🍸</button>
+    <button class="speed">🏎️</button>
   </div>
 </template>
 
@@ -91,6 +97,10 @@ export default {
 </script>
 
 <style lang="scss">
+  body {
+    background-color: $color--chalky;
+  }
+  
   .figure {
     position: absolute;
     top: 0;
@@ -137,7 +147,21 @@ export default {
     .body {
       position: relative;
       height: 100%;
+      max-width: 80%;
       z-index: 1;
+      display: block;
+    }
+
+    .hand {
+      position: absolute;
+      top: 23%;
+      right: 15%;
+      width: 15%;
+      z-index: 2;
+
+      img {
+        width: 100%;
+      }
     }
   }
 
@@ -161,7 +185,7 @@ export default {
       font-size: clamp(50px, 4vw, 102px);
 
       &--big {
-        font-size: clamp(75px, 6vw, 142px)
+        font-size: clamp(65px, 5vw, 142px)
       }
 
       &.slide-up-enter-active,
@@ -178,6 +202,35 @@ export default {
         opacity: 0;
         transform: translate(-50%, -150%);
       }
+    }
+  }
+
+  .controls {
+    position: absolute;
+    bottom: 10vh;
+    right: 10.75vw;
+    width: 43vw;
+    display: flex;
+    align-items: center;
+
+    button {
+      border: solid 3px $color--black;
+      font-size: clamp(18px, 2vw, 35px);
+      color: $color--black;
+    }
+
+    .main {
+      padding: 1.75vw 2vw;
+      white-space: nowrap;
+      background-color: transparent;
+      border-radius: 70px;
+    }
+
+    .speed {
+      padding: 1.35vw 2vw 2.15vw;
+      margin-left: 20px;
+      background-color: $color--ocean-green;
+      border-radius: 50%;
     }
   }
 

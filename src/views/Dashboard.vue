@@ -21,7 +21,7 @@
         <article class="dashboard__form">
             <Panel headline="Add new Gin" @confirm="addGin" confirmText="Add gin">
                 <template v-slot:body>
-                    <GinForm ref="ginForm" :typesOfGin="typesOfGin"></GinForm>
+                    <GinForm ref="ginForm" :typesOfGarnish="typesOfGarnish" :garnish="garnish" :typesOfTonic="typesOfTonic" :tonics="tonics" :typesOfGin="typesOfGin" @newType="addNewGinType"></GinForm>
                 </template>
             </Panel>
         </article>
@@ -42,7 +42,7 @@
             TonicForm,
             GinForm
         },
-        emits: ["newGin", "newTonic", "newGarnish", "newGarnish", "newGarnishType", "newTonicType"],
+        emits: ["newGin", "newTonic", "newGarnish", "newGarnish", "newGinType", "newGarnishType", "newTonicType"],
         props: {
             gins: {
                 type: Array,
@@ -109,17 +109,26 @@
             },
             addGin() {
                 console.log("add gin")
+            },
+            addNewGinType(payload) {
+                this.$emit("newGinType", payload)
             }
         }
     }
 </script>
 
 <style lang="scss">
+    body {
+        font-family: "Poppins", sans-serif;
+        background-color: $color--swan-white;
+    }
+
     .dashboard {
         display: flex;
         margin: 5vh auto 0;
         width: 80vw;
         justify-content: space-between;
+        align-items: stretch;
         flex-wrap: wrap;
 
         h1 {
@@ -127,13 +136,10 @@
         }
 
         &__form {
-            width: 400px;
-            max-width: 30%;
+            margin: 0 0 3%;
+            width: 100%;
+            max-width: 32%;
             flex-shrink: 0;
-
-            @media(max-width: 1024px) {
-                width: 100%;
-            }
         }
 
         &__gins {

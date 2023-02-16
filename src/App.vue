@@ -94,7 +94,7 @@ export default {
     addTonic(tonic) {
       console.log("Add the tonic: ", tonic)
     },
-    async addTonicType(typeName) {
+    async addTonicType(type) {
       let newId = null
 
       if(this.typesOfTonic.length > 0) {
@@ -111,7 +111,8 @@ export default {
 
       newData.types.push({
         id: newId,
-        name: typeName
+        name: type.name,
+        description: type.description
       })
 
       const options = {
@@ -299,6 +300,16 @@ export default {
           margin-bottom: 0;
         }
 
+        &--column {
+          flex-direction: column;
+          align-items: flex-start;
+
+          .small {
+            margin-top: 0;
+            margin-bottom: 10px;
+          }
+        }
+
         textarea {
           margin-top: 12px;
           padding: 12px;
@@ -309,10 +320,16 @@ export default {
           border-radius: 3px;
           border: solid 1px lighten($color--crocodile-tooth, 10);
           background-color: lighten($color--crocodile-tooth, 18);
+
+          &.small {
+              padding: 6px;
+              font-size: 12px;
+              min-height: 75px;
+            }
         }
 
         input {
-          &:not(:last-child) {
+          &:not(:last-child):not(:nth-last-child(2)) {
             margin-bottom: 10px;
           }
 

@@ -13,8 +13,9 @@
             </div>
             <div class="form__group-footer">
                 <a href="#" @click.prevent="showNewType = true">Add new type</a>
-                <div class="form__group-field">
+                <div class="form__group-field form__group-field--column">
                     <input v-if="showNewType" @keyup.enter="addType" type="text" class="small" placeholder="Name of new type" v-model="newType" />
+                    <textarea v-if="showNewType" @keyup.enter="addType" class="small" placeholder="Say something about the tonic" v-model="typeDescription"></textarea>
                     <button v-if="showNewType" @click="addType" type="button" class="button button--main button--small">Add</button>
                 </div>
             </div>
@@ -39,6 +40,7 @@
                 showNewType: false,
                 newType: "",
                 tonicName: "",
+                typeDescription: "",
                 pickedTonicType: "",
             }
         },
@@ -47,7 +49,10 @@
                 console.log("something worked")
             },
             addType() {
-                this.$emit("newType", this.newType);
+                this.$emit("newType", {
+                    name: this.newType,
+                    description: this.typeDescription
+                });
                 
                 this.newType = "";
                 this.showNewType = false;                

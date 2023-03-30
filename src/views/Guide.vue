@@ -37,7 +37,7 @@
     </transition>
   </div>
   <div class="controls">
-    <button class="main">🌿 Let the good times begin 🍸</button>
+    <button @click="$router.push('/ice')" class="main">🌿 Let the good times begin 🍸</button>
     <button class="speed">🏎️</button>
   </div>
 </template>
@@ -96,9 +96,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   body {
     background-color: $color--chalky;
+    overflow: hidden;
   }
   
   .figure {

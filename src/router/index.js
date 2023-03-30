@@ -5,7 +5,14 @@ const routes = [
   {
     path: '/',
     name: 'guide',
-    component: WelcomeView
+    component: WelcomeView,
+    meta: { transition: 'fade'}
+  },
+  {
+    path: '/ice',
+    name: 'ice',
+    component: () => import('../views/Step1.vue'),
+    meta: { transition: 'fade'}
   },
   {
     path: '/dashboard',

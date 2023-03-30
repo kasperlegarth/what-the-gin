@@ -222,6 +222,8 @@ export default {
     margin: 0;
     height: 100%;
     font-size: 16px;
+    background-color: $color--chalky;
+    overflow: hidden;
   }
 
   h1 {
